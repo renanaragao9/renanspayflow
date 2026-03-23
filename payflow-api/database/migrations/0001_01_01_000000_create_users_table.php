@@ -12,10 +12,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('birthdate')->nullable();
+            $table->string('phone')->nullable();
             $table->string('password');
+            $table->string('gender')->nullable();
+            $table->string('address')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('last_login_at')->nullable();
+            $table->bigInteger('login_count')->default(0);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

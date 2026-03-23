@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\V1\Controllers\Api\Auth;
 
-use App\Http\Controllers\Api\Global\BaseController;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Resources\Auth\AuthResource;
+use App\Http\V1\Resources\Auth\AuthResource;
+use App\Http\V1\Controllers\Api\Global\BaseController;
+use App\Http\V1\Requests\Auth\LoginRequest;
+use App\Http\V1\Requests\Auth\RegisterRequest;
 use App\Services\Auth\LoginService;
 use App\Services\Auth\LogoutService;
 use App\Services\Auth\RegisterService;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api\Global;
+namespace App\Http\V1\Controllers\Api\Global;
 
-use App\Http\Controllers\Controller;
+use App\Http\V1\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 
 class BaseController extends Controller

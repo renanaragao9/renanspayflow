@@ -10,7 +10,8 @@ class LoginService
     {
         $user = User::where('email', $data['email'])->first();
         $user->update([
-            'last_access' => now(),
+            'last_login_at' => now(),
+            'login_count' => $user->login_count + 1,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
