@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\ExpenseInstallment;
 
 use App\Models\CostCenter;
 use App\Models\Expense;

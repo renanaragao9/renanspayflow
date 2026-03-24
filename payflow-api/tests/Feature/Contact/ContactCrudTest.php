@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Contact;
 
 use App\Models\Contact;
 use App\Models\User;
