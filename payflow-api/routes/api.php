@@ -6,6 +6,7 @@ use App\Http\V1\Controllers\CostCenter\CostCenterController;
 use App\Http\V1\Controllers\Expense\ExpenseController;
 use App\Http\V1\Controllers\ExpenseInstallment\ExpenseInstallmentController;
 use App\Http\V1\Controllers\ExpenseSplit\ExpenseSplitController;
+use App\Http\V1\Controllers\Message\MessageController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function (): void {
@@ -26,5 +27,6 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::apiResource('expenses', ExpenseController::class);
         Route::apiResource('expense-installments', ExpenseInstallmentController::class);
         Route::apiResource('expense-splits', ExpenseSplitController::class);
+        Route::apiResource('messages', MessageController::class);
     });
 });
