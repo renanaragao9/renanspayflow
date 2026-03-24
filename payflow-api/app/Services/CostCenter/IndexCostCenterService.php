@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Services\Mark;
+namespace App\Services\CostCenter;
 
-use App\Models\Mark;
+use App\Models\CostCenter;
 use App\Traits\OrderByColumnAndDirection;
 use App\Traits\ParseRequestParams;
 
-class IndexMarkService
+class IndexCostCenterService
 {
     use OrderByColumnAndDirection;
     use ParseRequestParams;
 
-    private Mark $mark;
+    private CostCenter $costCenter;
 
-    public function __construct(Mark $mark)
+    public function __construct(CostCenter $costCenter)
     {
-        $this->mark = $mark;
+        $this->costCenter = $costCenter;
     }
 
     public function run($data)
@@ -27,10 +27,10 @@ class IndexMarkService
         $orderByColumn = $data['order_by_column'] ?? 'id';
         $orderByDirection = $data['order_by_direction'] ?? 'asc';
 
-        $query = $this->mark
-            ->with('products')
+        $query = $this->costCenter
+            ->with('user')
             ->when($search, function ($query) use ($search) {
-                return $query->where('name', 'like', '%' . $search . '%');
+                return $query->where('name', 'like', '%'.$search.'%');
             });
 
         if ($paginate) {

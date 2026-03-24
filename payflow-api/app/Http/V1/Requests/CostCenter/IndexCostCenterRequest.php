@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\V1\Requests\Mark;
+namespace App\Http\V1\Requests\CostCenter;
 
 use App\Http\V1\Requests\Global\BaseFormRequest;
 
-class IndexMarkRequest extends BaseFormRequest
+class IndexCostCenterRequest extends BaseFormRequest
 {
     public function rules(): array
     {

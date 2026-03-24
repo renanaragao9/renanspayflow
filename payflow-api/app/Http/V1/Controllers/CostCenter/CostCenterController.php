@@ -3,74 +3,74 @@
 namespace App\Http\V1\Controllers\CostCenter;
 
 use App\Http\V1\Controllers\Global\BaseController;
-use App\Http\V1\Requests\Mark\IndexMarkRequest;
-use App\Http\V1\Requests\Mark\StoreMarkRequest;
-use App\Http\V1\Requests\Mark\UpdateMarkRequest;
-use App\Http\V1\Resources\Mark\MarkResource;
-use App\Models\Mark;
-use App\Services\Mark\DeleteMarkService;
-use App\Services\Mark\IndexMarkService;
-use App\Services\Mark\StoreMarkService;
-use App\Services\Mark\UpdateMarkService;
+use App\Http\V1\Requests\CostCenter\IndexCostCenterRequest;
+use App\Http\V1\Requests\CostCenter\StoreCostCenterRequest;
+use App\Http\V1\Requests\CostCenter\UpdateCostCenterRequest;
+use App\Http\V1\Resources\CostCenter\CostCenterResource;
+use App\Models\CostCenter;
+use App\Services\CostCenter\DeleteCostCenterService;
+use App\Services\CostCenter\IndexCostCenterService;
+use App\Services\CostCenter\StoreCostCenterService;
+use App\Services\CostCenter\UpdateCostCenterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CostCenterController extends BaseController
 {
     public function index(
-        IndexMarkRequest $indexMarkRequest,
-        IndexMarkService $indexMarkService,
+        IndexCostCenterRequest $indexCostCenterRequest,
+        IndexCostCenterService $indexCostCenterService,
     ): AnonymousResourceCollection {
-        $data = $indexMarkRequest->validated();
-        $marks = $indexMarkService->run($data);
+        $data = $indexCostCenterRequest->validated();
+        $costCenters = $indexCostCenterService->run($data);
 
-        return MarkResource::collection($marks);
+        return CostCenterResource::collection($costCenters);
     }
 
-    public function show(Mark $mark): JsonResponse
+    public function show(CostCenter $costCenter): JsonResponse
     {
         return $this->successResponse(
-            new MarkResource($mark),
-            'Marca encontrada com sucesso.'
+            new CostCenterResource($costCenter),
+            'Centro de custo encontrado com sucesso.'
         );
     }
 
     public function store(
-        StoreMarkRequest $storeMarkRequest,
-        StoreMarkService $storeMarkService
+        StoreCostCenterRequest $storeCostCenterRequest,
+        StoreCostCenterService $storeCostCenterService
     ): JsonResponse {
-        $data = $storeMarkRequest->validated();
-        $mark = $storeMarkService->run($data);
+        $data = $storeCostCenterRequest->validated();
+        $costCenter = $storeCostCenterService->run($data);
 
         return $this->successResponse(
-            new MarkResource($mark),
-            'Marca criada com sucesso.'
+            new CostCenterResource($costCenter),
+            'Centro de custo criado com sucesso.'
         );
     }
 
     public function update(
-        UpdateMarkRequest $updateMarkRequest,
-        UpdateMarkService $updateMarkService,
-        Mark $mark
+        UpdateCostCenterRequest $updateCostCenterRequest,
+        UpdateCostCenterService $updateCostCenterService,
+        CostCenter $costCenter
     ): JsonResponse {
-        $data = $updateMarkRequest->validated();
-        $mark = $updateMarkService->run($mark, $data);
+        $data = $updateCostCenterRequest->validated();
+        $costCenter = $updateCostCenterService->run($costCenter, $data);
 
         return $this->successResponse(
-            new MarkResource($mark),
-            'Marca atualizada com sucesso.'
+            new CostCenterResource($costCenter),
+            'Centro de custo atualizado com sucesso.'
         );
     }
 
     public function destroy(
-        Mark $mark,
-        DeleteMarkService $deleteMarkService
+        CostCenter $costCenter,
+        DeleteCostCenterService $deleteCostCenterService
     ): JsonResponse {
-        $deleteMarkService->run($mark);
+        $deleteCostCenterService->run($costCenter);
 
         return $this->successResponse(
             null,
-            'Marca removida com sucesso.'
+            'Centro de custo removido com sucesso.'
         );
     }
 }

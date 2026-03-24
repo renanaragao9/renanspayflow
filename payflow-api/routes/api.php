@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\V1\Controllers\Api\Auth\AuthController;
+use App\Http\V1\Controllers\Auth\AuthController;
+use App\Http\V1\Controllers\CostCenter\CostCenterController;
+use App\Http\V1\Controllers\Expense\ExpenseController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function (): void {
@@ -13,5 +15,10 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('register', [AuthController::class, 'register']);
         Route::get('me', [AuthController::class, 'me']);
+    });
+
+    Route::prefix('v1')->group(function (): void {
+        Route::apiResource('cost-centers', CostCenterController::class);
+        Route::apiResource('expenses', ExpenseController::class);
     });
 });
