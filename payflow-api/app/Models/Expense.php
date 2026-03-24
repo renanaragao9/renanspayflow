@@ -20,4 +20,9 @@ class Expense extends BaseModel
     {
         return $this->belongsTo(CostCenter::class);
     }
+
+    public function installments()
+    {
+        return $this->hasMany(ExpenseInstallment::class);
+    }
 }
