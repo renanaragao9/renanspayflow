@@ -20,4 +20,9 @@ class ExpenseInstallment extends BaseModel
     {
         return $this->belongsTo(Expense::class);
     }
+
+    public function splits()
+    {
+        return $this->hasMany(ExpenseSplit::class);
+    }
 }
