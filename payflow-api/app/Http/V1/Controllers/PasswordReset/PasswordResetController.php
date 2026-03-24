@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\V1\Controllers\Api\PasswordReset;
+namespace App\Http\V1\Controllers\PasswordReset;
 
-use App\Http\V1\Controllers\Api\Global\BaseController;
+use App\Http\V1\Controllers\Global\BaseController;
 use App\Http\V1\Requests\PasswordReset\ForgotPasswordRequest;
 use App\Http\V1\Requests\PasswordReset\ResetPasswordRequest;
 use App\Services\PasswordReset\ForgotPasswordService;
@@ -18,10 +18,6 @@ class PasswordResetController extends BaseController
         $data = $forgotPasswordRequest->validated();
         $response = $forgotPasswordService->run($data);
 
-        if ($response['status'] === 'error') {
-            return $this->errorResponse([], $response['message']);
-        }
-
         return $this->successResponse($response['data'], $response['message']);
     }
 
@@ -30,12 +26,8 @@ class PasswordResetController extends BaseController
         ResetPasswordService $resetPasswordService
     ): JsonResponse {
         $data = $resetPasswordRequest->validated();
-        $response = $resetPasswordService->run($data);
+        $resetPasswordService->run($data);
 
-        if ($response['status'] === 'error') {
-            return $this->errorResponse([], $response['message']);
-        }
-
-        return $this->successResponse($response['data'], $response['message']);
+        return $this->successResponse([], 'Senha redefinida com sucesso.');
     }
 }
