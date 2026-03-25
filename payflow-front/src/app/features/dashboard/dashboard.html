@@ -1,0 +1,29 @@
+<div>
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+    @if (currentUser()) {
+      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        Bem-vindo de volta, <strong>{{ currentUser()!.name }}</strong>!
+      </p>
+    }
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Despesas do mês</p>
+      <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">R$ 0,00</p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Centros de custo</p>
+      <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">0</p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Contatos</p>
+      <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">0</p>
+    </div>
+
+  </div>
+</div>
