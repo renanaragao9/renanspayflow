@@ -1,0 +1,153 @@
+<!-- Modal overlay -->
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'cost-center-form-title'"
+>
+  <div
+    class="w-full max-w-lg bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 animate-fade-in"
+  >
+    <!-- Header -->
+    <div
+      class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700"
+    >
+      <h3
+        id="cost-center-form-title"
+        class="text-lg font-semibold text-gray-900 dark:text-white"
+      >
+        {{ title() }}
+      </h3>
+      <button
+        type="button"
+        (click)="cancel()"
+        aria-label="Fechar"
+        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Error Alert -->
+    @if (error()) {
+      <div
+        class="mx-6 mt-4 flex items-center gap-3 p-3 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-red-900/20 dark:text-red-400 border border-red-200 dark:border-red-800"
+        role="alert"
+      >
+        <svg class="shrink-0 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+        </svg>
+        {{ error() }}
+      </div>
+    }
+
+    <!-- Form -->
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="p-6 space-y-5">
+
+      <!-- Name -->
+      <div>
+        <label for="cc-name" class="block mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+          Nome <span aria-hidden="true" class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="cc-name"
+          formControlName="name"
+          placeholder="Ex.: Marketing, TI, Vendas"
+          class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full px-3 py-2.5 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 focus:outline-none focus:ring-2 transition-colors"
+          [class.border-gray-300]="!fieldInvalid('name')"
+          [class.focus:ring-blue-500]="!fieldInvalid('name')"
+          [class.focus:border-blue-500]="!fieldInvalid('name')"
+          [class.dark:border-gray-600]="!fieldInvalid('name')"
+          [class.border-red-500]="fieldInvalid('name')"
+          [class.focus:ring-red-500]="fieldInvalid('name')"
+          [class.dark:border-red-500]="fieldInvalid('name')"
+        />
+        @if (fieldInvalid('name')) {
+          <p class="mt-1.5 text-xs text-red-600 dark:text-red-400">
+            @if (form.get('name')?.hasError('required')) { O nome é obrigatório. }
+            @else if (form.get('name')?.hasError('minlength')) { O nome deve ter no mínimo 3 caracteres. }
+            @else if (form.get('name')?.hasError('maxlength')) { O nome não pode ter mais de 255 caracteres. }
+          </p>
+        }
+      </div>
+
+      <!-- Type -->
+      <div>
+        <label for="cc-type" class="block mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+          Tipo <span aria-hidden="true" class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="cc-type"
+          formControlName="type"
+          list="cc-type-options"
+          placeholder="Ex.: Fixo, Variável, Projeto"
+          class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full px-3 py-2.5 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 focus:outline-none focus:ring-2 transition-colors"
+          [class.border-gray-300]="!fieldInvalid('type')"
+          [class.focus:ring-blue-500]="!fieldInvalid('type')"
+          [class.focus:border-blue-500]="!fieldInvalid('type')"
+          [class.dark:border-gray-600]="!fieldInvalid('type')"
+          [class.border-red-500]="fieldInvalid('type')"
+          [class.focus:ring-red-500]="fieldInvalid('type')"
+          [class.dark:border-red-500]="fieldInvalid('type')"
+        />
+        <datalist id="cc-type-options">
+          <option value="Fixo"></option>
+          <option value="Variável"></option>
+          <option value="Projeto"></option>
+          <option value="Investimento"></option>
+          <option value="Departamento"></option>
+        </datalist>
+        @if (fieldInvalid('type')) {
+          <p class="mt-1.5 text-xs text-red-600 dark:text-red-400">
+            @if (form.get('type')?.hasError('required')) { O tipo é obrigatório. }
+            @else if (form.get('type')?.hasError('maxlength')) { O tipo não pode ter mais de 255 caracteres. }
+          </p>
+        }
+      </div>
+
+      <!-- Due Date -->
+      <div>
+        <label for="cc-due-date" class="block mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+          Data de Vencimento
+        </label>
+        <input
+          type="date"
+          id="cc-due-date"
+          formControlName="dueDate"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full px-3 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+        />
+      </div>
+
+      <!-- Footer -->
+      <div class="flex justify-end gap-3 pt-2">
+        <button
+          type="button"
+          (click)="cancel()"
+          class="px-4 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="loading()"
+          class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+        >
+          @if (loading()) {
+            <svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+            </svg>
+            Salvando…
+          } @else {
+            {{ isEditing() ? 'Salvar alterações' : 'Criar centro de custo' }}
+          }
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

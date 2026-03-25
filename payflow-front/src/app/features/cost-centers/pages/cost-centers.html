@@ -1,0 +1,264 @@
+<div>
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Centros de Custo</h1>
+      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        Gerencie os centros de custo da sua organização.
+      </p>
+    </div>
+    <button
+      type="button"
+      (click)="openCreate()"
+      class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+      Novo Centro de Custo
+    </button>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div class="px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+      <form (ngSubmit)="onSearch()" class="flex gap-2">
+        <div class="relative flex-1 max-w-sm">
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </div>
+          <input
+            type="search"
+            [(ngModel)]="searchInput"
+            name="search"
+            placeholder="Buscar por nome…"
+            class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg pl-9 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          />
+        </div>
+        <button
+          type="submit"
+          class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors"
+        >
+          Buscar
+        </button>
+        @if (searchInput()) {
+          <button
+            type="button"
+            (click)="clearSearch()"
+            class="px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors"
+          >
+            Limpar
+          </button>
+        }
+      </form>
+    </div>
+
+    @if (loading()) {
+      <div class="flex justify-center items-center py-16" role="status" aria-label="Carregando">
+        <svg class="w-8 h-8 animate-spin text-blue-600" viewBox="0 0 24 24" fill="none">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+        </svg>
+      </div>
+    }
+
+    @if (!loading() && error()) {
+      <div class="flex flex-col items-center justify-center py-16 gap-3 text-center px-4">
+        <svg class="w-12 h-12 text-red-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+        </svg>
+        <p class="text-sm text-red-600 dark:text-red-400 font-medium">{{ error() }}</p>
+        <button
+          type="button"
+          (click)="onSearch()"
+          class="text-sm text-blue-600 hover:underline dark:text-blue-400"
+        >
+          Tentar novamente
+        </button>
+      </div>
+    }
+
+    @if (!loading() && !error()) {
+      @if (items().length === 0) {
+        <div class="flex flex-col items-center justify-center py-16 gap-3 text-center px-4">
+          <svg class="w-12 h-12 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+          </svg>
+          <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+            @if (searchInput()) {
+              Nenhum resultado para "{{ searchInput() }}".
+            } @else {
+              Nenhum centro de custo cadastrado ainda.
+            }
+          </p>
+          @if (!searchInput()) {
+            <button
+              type="button"
+              (click)="openCreate()"
+              class="text-sm text-blue-600 hover:underline dark:text-blue-400 font-medium"
+            >
+              Criar o primeiro
+            </button>
+          }
+        </div>
+
+      } @else {
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left text-gray-600 dark:text-gray-300">
+            <thead class="text-xs text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-gray-700/60 border-b border-gray-200 dark:border-gray-700">
+              <tr>
+                <th scope="col" class="px-5 py-3 font-medium">Nome</th>
+                <th scope="col" class="px-5 py-3 font-medium">Tipo</th>
+                <th scope="col" class="px-5 py-3 font-medium">Vencimento</th>
+                <th scope="col" class="px-5 py-3 font-medium text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+              @for (item of items(); track item.id) {
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/40 transition-colors">
+                  <td class="px-5 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                    {{ item.name }}
+                  </td>
+                  <td class="px-5 py-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                      {{ item.type }}
+                    </span>
+                  </td>
+                  <td class="px-5 py-4 text-gray-500 dark:text-gray-400">
+                    @if (item.dueDate) {
+                      {{ item.dueDate.substring(0, 10) }}
+                    } @else {
+                      <span class="text-gray-300 dark:text-gray-600">—</span>
+                    }
+                  </td>
+                  <td class="px-5 py-4">
+                    <div class="flex items-center justify-end gap-1">
+                      <button
+                        type="button"
+                        (click)="openEdit(item)"
+                        [attr.aria-label]="'Editar ' + item.name"
+                        class="p-1.5 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        (click)="openDelete(item)"
+                        [attr.aria-label]="'Excluir ' + item.name"
+                        class="p-1.5 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        @if (meta() && lastPage() > 1) {
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-5 py-4 border-t border-gray-200 dark:border-gray-700">
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              Exibindo {{ pageInfo() }} registros
+            </p>
+            <div class="flex items-center gap-1.5">
+              <button
+                type="button"
+                (click)="goToPage(currentPage() - 1)"
+                [disabled]="isFirstPage()"
+                aria-label="Página anterior"
+                class="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                ‹ Anterior
+              </button>
+              <span class="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300">
+                {{ currentPage() }} / {{ lastPage() }}
+              </span>
+              <button
+                type="button"
+                (click)="goToPage(currentPage() + 1)"
+                [disabled]="isLastPage()"
+                aria-label="Próxima página"
+                class="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                Próxima ›
+              </button>
+            </div>
+          </div>
+        }
+      }
+    }
+
+  </div>
+</div>
+
+@if (isFormOpen()) {
+  <app-cost-center-form
+    [costCenter]="editingItem()"
+    (saved)="onSaved()"
+    (cancelled)="closeForm()"
+  />
+}
+
+@if (deletingItem()) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="delete-dialog-title"
+  >
+    <div class="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-6">
+      <div class="flex items-start gap-4">
+        <div class="shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30">
+          <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <h3 id="delete-dialog-title" class="text-base font-semibold text-gray-900 dark:text-white">
+            Remover centro de custo
+          </h3>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Tem certeza que deseja remover
+            <strong class="text-gray-700 dark:text-gray-200">{{ deletingItem()!.name }}</strong>?
+            Esta ação não poderá ser desfeita.
+          </p>
+          @if (deleteError()) {
+            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ deleteError() }}</p>
+          }
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 mt-6">
+        <button
+          type="button"
+          (click)="closeDelete()"
+          [disabled]="deleteLoading()"
+          class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          (click)="confirmDelete()"
+          [disabled]="deleteLoading()"
+          class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+        >
+          @if (deleteLoading()) {
+            <svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+            </svg>
+            Removendo…
+          } @else {
+            Sim, remover
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}

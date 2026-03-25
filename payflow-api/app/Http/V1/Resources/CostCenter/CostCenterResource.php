@@ -14,7 +14,6 @@ class CostCenterResource extends JsonResource
             'name' => $this->name,
             'type' => $this->type,
             'due_date' => $this->due_date,
-            'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

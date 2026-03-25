@@ -12,7 +12,6 @@ class StoreCostCenterRequest extends BaseFormRequest
             'name' => ['required', 'string', 'min:3', 'max:255', 'unique:cost_centers,name'],
             'type' => ['required', 'string', 'max:255'],
             'due_date' => ['nullable', 'date'],
-            'user_id' => ['required', 'exists:users,id'],
         ];
     }
 
@@ -28,8 +27,6 @@ class StoreCostCenterRequest extends BaseFormRequest
             'type.string' => 'O tipo deve ser um texto.',
             'type.max' => 'O tipo não pode ter mais de 255 caracteres.',
             'due_date.date' => 'A data de vencimento deve ser uma data válida.',
-            'user_id.required' => 'O usuário é obrigatório.',
-            'user_id.exists' => 'O usuário informado não existe.',
         ];
     }
 }
